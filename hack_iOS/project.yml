@@ -1,0 +1,24 @@
+name: hack_iOS
+targets:
+  hack_iOS:
+    type: application
+    platform: iOS
+    deploymentTarget: "13.0"
+    sources: hack_iOS
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: CTAhack_iOS.hack_iOS
+  hack_iOSTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "13.0"
+    sources: hack_iOSTests
+    dependencies:
+      - target: hack_iOS
+  hack_iOSUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "13.0"
+    sources: hack_iOSUITests
+    dependencies:
+      - target: hack_iOS
+

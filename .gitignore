@@ -92,3 +92,6 @@ iOSInjectionProject/
 
 # Gems
 /vendor
+
+hack_iOS.xcodeproj
+hack_iOS.xcworkspace

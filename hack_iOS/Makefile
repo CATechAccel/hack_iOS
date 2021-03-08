@@ -1,5 +1,8 @@
+xcodegen:
+	xcodegen
+	bundle exec pod install
 setup:
 	bundle install
-	bundle exec pod install
+	make xcodegen
 update:
 	bundle exec pod update
