@@ -1,0 +1,6 @@
+framework module Pods_hack_iOS_hack_iOSUITests {
+  umbrella header "Pods-hack_iOS-hack_iOSUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
