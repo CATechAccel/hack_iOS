@@ -20,6 +20,13 @@ final class ListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "タスク一覧"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(tapAddBarButton))
+    }
+    
+    @objc private func tapAddBarButton(){
+        let nextViewController = AddTaskViewController()
+        navigationController?.pushViewController(nextViewController, animated: true)
     }
 }
 

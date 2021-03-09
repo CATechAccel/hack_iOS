@@ -26,8 +26,9 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func tapLoginButton() {
-        let nextViewController = ListViewController()
-        nextViewController.modalPresentationStyle = .fullScreen
-        present(nextViewController, animated: true, completion: nil)
+        let rootVC = ListViewController()
+        let navVC = UINavigationController(rootViewController: rootVC)
+        navVC.modalPresentationStyle = .fullScreen
+        present(navVC, animated: true)
     }
 }
