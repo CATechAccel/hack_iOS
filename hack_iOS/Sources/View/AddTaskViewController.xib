@@ -35,8 +35,11 @@
                     <state key="normal" title="Button"/>
                 </button>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kKS-LP-3es">
-                    <rect key="frame" x="77" y="245" width="260" height="295"/>
+                    <rect key="frame" x="77" y="245" width="260" height="260"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="260" id="AMh-aQ-WdP"/>
+                    </constraints>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <color key="textColor" systemColor="labelColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -57,7 +60,6 @@
                 <constraint firstItem="kKS-LP-3es" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="bMY-p7-2rD"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="kKS-LP-3es" secondAttribute="trailing" constant="77" id="diM-d5-i2j"/>
                 <constraint firstItem="kKS-LP-3es" firstAttribute="top" secondItem="asj-4m-aBe" secondAttribute="bottom" constant="20" id="kGT-Vq-d1q"/>
-                <constraint firstItem="he2-Sn-Dpw" firstAttribute="top" secondItem="kKS-LP-3es" secondAttribute="bottom" constant="165" id="oYf-wv-ERm"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="he2-Sn-Dpw" secondAttribute="bottom" constant="89" id="vNy-q1-ydG"/>
             </constraints>
             <point key="canvasLocation" x="-197.10144927536234" y="145.98214285714286"/>
