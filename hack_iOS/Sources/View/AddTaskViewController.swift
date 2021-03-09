@@ -7,11 +7,12 @@
 
 import UIKit
 
-class AddTaskViewController: UIViewController {
+class AddTaskViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var inputnameTextField: UITextField! {
         didSet {
             inputnameTextField.placeholder = "タスクのなまえ"
+            inputnameTextField.delegate = self
         }
     }
     @IBOutlet weak var inputDescriptionTextView: UITextView! {
@@ -30,7 +31,16 @@ class AddTaskViewController: UIViewController {
         super.viewDidLoad()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     @objc private func tapAddButton() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        inputnameTextField.resignFirstResponder()
+        return true
     }
 }
