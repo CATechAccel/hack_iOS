@@ -13,6 +13,7 @@ final class ListViewController: UIViewController {
         didSet {
             tableView.delegate = self
             tableView.dataSource = self
+            tableView.allowsSelection = false
             tableView.register(UINib(nibName: "TaskTableViewCell", bundle: nil), forCellReuseIdentifier: "TaskTableViewCell")
         }
     }
