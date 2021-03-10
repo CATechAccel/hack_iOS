@@ -7,8 +7,8 @@
 
 import Foundation
 // TODO どのステータスがoptionalになるかなどについてサーバーチームと確認し、応じて修正する必要あり
-struct Task: Decodable {
-    let id: Int
+struct Task: Codable {
+    let id: String
     let name: String
     let description: String
     let done: Bool
