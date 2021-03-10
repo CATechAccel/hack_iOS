@@ -5,7 +5,8 @@ target 'hack_iOS' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for hack_iOS
+  pod 'RxSwift'
+  pod 'RxCocoa'
 
   target 'hack_iOSTests' do
     inherit! :search_paths
