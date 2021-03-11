@@ -1,5 +1,5 @@
 //
-//  LoginRequest.swift
+//  UserRequest.swift
 //  hack_iOS
 //
 //  Created by 山根大生 on 2021/03/11.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct LoginRequest: Requestable{
+struct UserRequest: Requestable {
     typealias Response = Void
     
-    var login: Login?
+    var user: User?
     
     var url: String {
         // TODO
@@ -27,10 +27,10 @@ struct LoginRequest: Requestable{
     }
     
     var body: Data? {
-        guard let login = login else {
+        guard let user = user else {
             return nil
         }
-        let body: [String: Any] = ["username": login.username]
+        let body: [String: Any] = ["username": user.username]
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }
     

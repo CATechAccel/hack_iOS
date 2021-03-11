@@ -1,5 +1,5 @@
 //
-//  MakeTaskRequest.swift
+//  AddTaskRequest.swift
 //  hack_iOS
 //
 //  Created by 山根大生 on 2021/03/11.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AddTaskRequest: Requestable{
+struct AddTaskRequest: Requestable {
     typealias Response = Void
     
     var addTask: AddTask?
@@ -30,7 +30,10 @@ struct AddTaskRequest: Requestable{
         guard let addTask = addTask else {
             return nil
         }
-        let body: [String: Any] = ["name": addTask.name,"description": addTask.description]
+        let body: [String: Any] = [
+            "name": addTask.name,
+            "description": addTask.description
+        ]
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }
     

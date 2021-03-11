@@ -22,7 +22,7 @@ struct APIClient {
                 completion(.failure(APIError.noResponse))
                 return
             }
-            
+            // TODO どんなエラーが返ってくるかについてサーバーチームと要相談
             if case 200..<300 = response.statusCode {
                 do {
                     let model = try requestable.decode(from: data)
