@@ -17,8 +17,8 @@ struct DoneRequest: Requestable{
         return ""
     }
     
-    var httpMethod: String {
-        return "POST"
+    var httpMethod: HTTPMethod {
+        return HTTPMethod.POST
     }
     
     var headers: [String : String] {

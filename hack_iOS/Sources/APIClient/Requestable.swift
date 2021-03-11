@@ -10,7 +10,7 @@ import Foundation
 protocol Requestable {
     associatedtype Response
     var url: String { get }
-    var httpMethod: String { get }
+    var httpMethod: HTTPMethod { get }
     var headers: [String: String] { get }
     var body: Data? { get }
     
@@ -21,7 +21,7 @@ extension Requestable {
     var urlRequest: URLRequest? {
         guard let url = URL(string: url) else { return nil }
         var request = URLRequest(url: url)
-        request.httpMethod = httpMethod
+        request.httpMethod = httpMethod.rawValue
         if let body = body {
             request.httpBody = body
         }
