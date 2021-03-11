@@ -10,7 +10,8 @@ import Foundation
 struct AddTaskRequest: Requestable {
     typealias Response = Void
     
-    var addTask: AddTask?
+    let name: String
+    let description: String
     
     var url: String {
         // TODO
@@ -21,18 +22,15 @@ struct AddTaskRequest: Requestable {
         return HTTPMethod.POST
     }
     
-    var headers: [String : String] {
+    var headers: [String: String] {
         // TODO
         return [:]
     }
     
     var body: Data? {
-        guard let addTask = addTask else {
-            return nil
-        }
         let body: [String: Any] = [
-            "name": addTask.name,
-            "description": addTask.description
+            "name": name,
+            "description": description
         ]
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }

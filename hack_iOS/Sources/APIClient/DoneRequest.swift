@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct DoneRequest: Requestable{
+struct DoneRequest: Requestable {
     typealias Response = Void
     
-    var done: Done?
+    let id: String
     
     var url: String {
         // TODO
@@ -21,16 +21,15 @@ struct DoneRequest: Requestable{
         return HTTPMethod.POST
     }
     
-    var headers: [String : String] {
+    var headers: [String: String] {
         // TODO
         return [:]
     }
     
     var body: Data? {
-        guard let done = done else {
-            return nil
-        }
-        let body: [String: Any] = ["id": done.id]
+        let body: [String: Any] = [
+            "id": id
+        ]
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }
     

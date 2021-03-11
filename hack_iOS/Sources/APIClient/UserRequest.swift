@@ -10,7 +10,7 @@ import Foundation
 struct UserRequest: Requestable {
     typealias Response = Void
     
-    var user: User?
+    var username: String
     
     var url: String {
         // TODO
@@ -21,16 +21,15 @@ struct UserRequest: Requestable {
         return HTTPMethod.POST
     }
     
-    var headers: [String : String] {
+    var headers: [String: String] {
         // TODO
         return [:]
     }
     
     var body: Data? {
-        guard let user = user else {
-            return nil
-        }
-        let body: [String: Any] = ["username": user.username]
+        let body: [String: Any] = [
+            "username": username
+        ]
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }
     
