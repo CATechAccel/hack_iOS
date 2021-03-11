@@ -39,7 +39,7 @@ struct APIClient {
 }
 
 enum APIError: Error {
-    case server(Int)
+    case network(Int)
     case decode(Error)
     case noResponse
     case unknown(Error)
