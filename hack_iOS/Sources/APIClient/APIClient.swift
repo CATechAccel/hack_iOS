@@ -31,7 +31,7 @@ struct APIClient {
                     completion(.failure(APIError.decode(decodeError)))
                 }
             } else {
-                completion(.failure(APIError.server(response.statusCode)))
+                completion(.failure(APIError.network(response.statusCode)))
             }
         })
         task.resume()
