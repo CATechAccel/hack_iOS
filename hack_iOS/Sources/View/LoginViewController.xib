@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController" customModule="hack_iOS" customModuleProvider="target">
             <connections>
                 <outlet property="loginButton" destination="lhC-Hg-4WO" id="44p-et-Ezd"/>
+                <outlet property="moveToSignUpViewButton" destination="5Rh-G4-LKf" id="zGk-ve-zoR"/>
                 <outlet property="userNameTextField" destination="wGI-4B-eRo" id="tRn-eB-eAT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -33,6 +34,13 @@
                     </constraints>
                     <state key="normal" title="Button"/>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rh-G4-LKf">
+                    <rect key="frame" x="136" y="774" width="142" height="68"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="68" id="qzo-00-Hsl"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -43,8 +51,11 @@
                 <constraint firstItem="wGI-4B-eRo" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Rdl-hh-GLK"/>
                 <constraint firstItem="wGI-4B-eRo" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="77" id="Rs9-Q8-8sb"/>
                 <constraint firstItem="lhC-Hg-4WO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="136" id="Xcc-BO-S0k"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5Rh-G4-LKf" secondAttribute="trailing" constant="136" id="ZaD-1c-2Yj"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="lhC-Hg-4WO" secondAttribute="bottom" constant="89" id="ash-6N-yQF"/>
                 <constraint firstItem="wGI-4B-eRo" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="147" id="hBL-I2-CtZ"/>
+                <constraint firstItem="5Rh-G4-LKf" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="136" id="i0d-dd-CL7"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="5Rh-G4-LKf" secondAttribute="bottom" constant="20" id="t8a-km-1Ro"/>
             </constraints>
             <point key="canvasLocation" x="-197.10144927536234" y="121.875"/>
         </view>

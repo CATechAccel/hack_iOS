@@ -17,8 +17,15 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     @IBOutlet private weak var loginButton: UIButton! {
         didSet {
-            loginButton.setTitle("LOGIN", for: .normal)
+            loginButton.setTitle("Login", for: .normal)
             loginButton.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
+        }
+    }
+    
+    @IBOutlet private weak var moveToSignUpViewButton: UIButton! {
+        didSet {
+            moveToSignUpViewButton.setTitle("SignupView", for: .normal)
+            moveToSignUpViewButton.addTarget(self, action: #selector(tapMoveToSignUpViewButton), for: .touchUpInside)
         }
     }
     
@@ -32,6 +39,13 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func tapLoginButton() {
         let rootVC = ListViewController()
+        let navVC = UINavigationController(rootViewController: rootVC)
+        navVC.modalPresentationStyle = .fullScreen
+        present(navVC, animated: true)
+    }
+    
+    @objc private func tapMoveToSignUpViewButton() {
+        let rootVC = SignUpViewController()
         let navVC = UINavigationController(rootViewController: rootVC)
         navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)

@@ -25,6 +25,13 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBOutlet private weak var moveToLoginViewButton: UIButton! {
+        didSet {
+            moveToLoginViewButton.setTitle("LoginView", for: .normal)
+            moveToLoginViewButton.addTarget(self, action: #selector(tapMoveToLoginViewButton), for: .touchUpInside)
+        }
+    }
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
@@ -32,6 +39,13 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func tapSignupButton() {
         let rootVC = ListViewController()
+        let navVC = UINavigationController(rootViewController: rootVC)
+        navVC.modalPresentationStyle = .fullScreen
+        present(navVC, animated: true)
+    }
+    
+    @objc private func tapMoveToLoginViewButton() {
+        let rootVC = LoginViewController()
         let navVC = UINavigationController(rootViewController: rootVC)
         navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)
