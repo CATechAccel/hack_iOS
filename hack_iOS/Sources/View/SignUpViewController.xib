@@ -30,7 +30,7 @@
                     <state key="normal" title="Button"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VZI-vw-nxb">
-                    <rect key="frame" x="136" y="774" width="142" height="68"/>
+                    <rect key="frame" x="100" y="774" width="214" height="68"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="68" id="G6n-w1-wOe"/>
                     </constraints>
@@ -45,10 +45,10 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="VZI-vw-nxb" secondAttribute="trailing" constant="136" id="1Vl-YH-xAr"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="VZI-vw-nxb" secondAttribute="trailing" constant="100" id="1Vl-YH-xAr"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="VZI-vw-nxb" secondAttribute="bottom" constant="20" id="4fn-fD-aVU"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="hqZ-gc-XdQ" secondAttribute="trailing" constant="77" id="6Ob-mF-G1r"/>
-                <constraint firstItem="VZI-vw-nxb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="136" id="Eg4-GW-DYp"/>
+                <constraint firstItem="VZI-vw-nxb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="100" id="Eg4-GW-DYp"/>
                 <constraint firstItem="TPD-zT-mQb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="136" id="IP8-xt-Xte"/>
                 <constraint firstItem="hqZ-gc-XdQ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="147" id="Mgd-xG-QGv"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TPD-zT-mQb" secondAttribute="trailing" constant="136" id="ef9-Na-eJb"/>
