@@ -8,8 +8,6 @@
 import Foundation
 
 struct APIClient {
-    let decoder: JSONDecoder
-    
     func request<T: Requestable>(_ requestable: T, completion: @escaping (Result<T.Response, APIError>) -> Void) {
         guard let request = requestable.urlRequest else { return }
         let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
