@@ -22,4 +22,9 @@ final class TaskTableViewCell: UITableViewCell {
             doneButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
         }
     }
+    
+    func configure(with task: Task) {
+        nameLabel.text = task.name
+        descriptionTextView.text = task.description
+    }
 }
