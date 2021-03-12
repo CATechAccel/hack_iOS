@@ -9,5 +9,11 @@ import Foundation
 
 class MockTasks {
     static let shared = MockTasks()
-    var Tasks: [Task] = []
+    var tasks: [Task] = []
+    
+    func setTasks() {
+        for i in 1...10 {
+            tasks.append(Task(id: "\(i)", name: "タスク\(i)", description: "\(i)個目のタスクです", done: i % 2 == 0))
+        }
+    }
 }
