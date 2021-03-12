@@ -1,13 +1,16 @@
 //
-//  LoginViewController.swift
+//  SignUpViewController.swift
 //  hack_iOS
 //
-//  Created by 山根大生 on 2021/03/09.
+//  Created by 化田晃平 on R 3/03/12.
 //
 
 import UIKit
 
-final class LoginViewController: UIViewController, UITextFieldDelegate {
+class SignUpViewController: UIViewController, UITextFieldDelegate {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
     
     @IBOutlet private weak var userNameTextField: UITextField! {
         didSet {
@@ -15,37 +18,34 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
             userNameTextField.delegate = self
         }
     }
-    @IBOutlet private weak var loginButton: UIButton! {
+    @IBOutlet private weak var signUpButton: UIButton! {
         didSet {
-            loginButton.setTitle("Login", for: .normal)
-            loginButton.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
+            signUpButton.setTitle("Signup", for: .normal)
+            signUpButton.addTarget(self, action: #selector(tapSignupButton), for: .touchUpInside)
         }
     }
     
-    @IBOutlet private weak var moveToSignUpViewButton: UIButton! {
+    @IBOutlet private weak var moveToLoginViewButton: UIButton! {
         didSet {
-            moveToSignUpViewButton.setTitle("SignupView", for: .normal)
-            moveToSignUpViewButton.addTarget(self, action: #selector(tapMoveToSignUpViewButton), for: .touchUpInside)
+            moveToLoginViewButton.setTitle("LoginView", for: .normal)
+            moveToLoginViewButton.addTarget(self, action: #selector(tapMoveToLoginViewButton), for: .touchUpInside)
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
-    @objc private func tapLoginButton() {
+    @objc private func tapSignupButton() {
         let rootVC = ListViewController()
         let navVC = UINavigationController(rootViewController: rootVC)
         navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)
     }
     
-    @objc private func tapMoveToSignUpViewButton() {
-        let rootVC = SignUpViewController()
+    @objc private func tapMoveToLoginViewButton() {
+        let rootVC = LoginViewController()
         let navVC = UINavigationController(rootViewController: rootVC)
         navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)
