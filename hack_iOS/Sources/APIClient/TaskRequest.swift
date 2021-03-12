@@ -28,6 +28,6 @@ struct TaskRequest: Requestable {
     
     func decode(from data: Data) throws -> [Task] {
         let decoder = JSONDecoder()
-        return try decoder.decode(Task.self, from: data)
+        return try decoder.decode([Task].self, from: data)
     }
 }

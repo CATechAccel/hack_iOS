@@ -8,8 +8,8 @@
 import Foundation
 
 struct TaskRepository: Repository {
-    typealias Response = Task
-    var apiClient: APIClient
+    typealias Response = [Task]
+    let apiClient = APIClient()
     
     func fetch(completion: @escaping (Result<Response, APIError>) -> Void) {
         let request = TaskRequest()

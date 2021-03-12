@@ -18,7 +18,7 @@ final class ListViewController: UIViewController {
         }
     }
         
-    init(taskRepository: TaskRepository = .init(apiClient: .init(decoder: .init()))) {
+    init(taskRepository: TaskRepository = .init()) {
         self.taskRepository = taskRepository
         super.init(nibName: nil, bundle: nil)
     }
@@ -46,11 +46,19 @@ final class ListViewController: UIViewController {
             guard let self = self else { return }
             switch result {
             case .success(let model):
-                self.mock.tasks = 
-            case .failure(let error):
-                break
+                self.mock.tasks = model
+            case .failure(let apiEerror):
+                switch apiEerror {
+                case .network(let statusCode):
+                    print("\(statusCode) エラー")
+                case .decode(let error):
+                    print(error)
+                case .noResponse:
+                    print("No Response Error")
+                case .unknown(let error):
+                    print(error)
+                }
             }
-            
         }
     }
     
