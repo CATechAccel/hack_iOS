@@ -8,7 +8,7 @@
 import Foundation
 
 struct TaskRequest: Requestable {
-    typealias Response = Task
+    typealias Response = [Task]
     
     var url: String {
         // TODO
@@ -26,7 +26,7 @@ struct TaskRequest: Requestable {
         return [:]
     }
     
-    func decode(from data: Data) throws -> Task {
+    func decode(from data: Data) throws -> [Task] {
         let decoder = JSONDecoder()
         return try decoder.decode(Task.self, from: data)
     }
