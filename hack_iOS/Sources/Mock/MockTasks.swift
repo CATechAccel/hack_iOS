@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+class MockTasks {
+    static let shared = MockTasks()
+    var Tasks: [Task] = []
+}
