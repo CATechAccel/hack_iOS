@@ -7,23 +7,38 @@
 
 import UIKit
 
-class SignUpViewController: UIViewController {
-
+class SignUpViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    @IBOutlet private weak var userNameTextField: UITextField! {
+        didSet {
+            userNameTextField.placeholder = "ユーザー名を入力"
+            userNameTextField.delegate = self
+        }
     }
-    */
-
+    @IBOutlet private weak var signUpButton: UIButton! {
+        didSet {
+            signUpButton.setTitle("Signup", for: .normal)
+            signUpButton.addTarget(self, action: #selector(tapSignupButton), for: .touchUpInside)
+        }
+    }
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    @objc private func tapSignupButton() {
+        let rootVC = ListViewController()
+        let navVC = UINavigationController(rootViewController: rootVC)
+        navVC.modalPresentationStyle = .fullScreen
+        present(navVC, animated: true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        userNameTextField.resignFirstResponder()
+        return true
+    }
 }
