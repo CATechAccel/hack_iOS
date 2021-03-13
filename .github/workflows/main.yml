@@ -39,10 +39,6 @@ jobs:
       run: bundle
     - name: Cocoapods install
       run: bundle exec pod install
-    # - name: Generate AccessToken.plist
-    #   env:  
-    #     ACCESS_TOKEN_PLIST_BASE64: ${{ secrets.APIKEY_PLIST_BASE64 }}
-    #   run: echo $ACCESS_TOKEN_PLIST_BASE64 | base64 --decode > Colombia/Resources/AccessToken.plist
     - name: Build App
-      run: xcodebuild -sdk iphonesimulator -scheme Colombia -workspace Colombia.xcworkspace
+      run: xcodebuild -sdk iphonesimulator -scheme hack_iOS -workspace hack_iOS.xcworkspace
 
