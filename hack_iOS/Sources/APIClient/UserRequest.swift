@@ -10,7 +10,7 @@ import Foundation
 struct UserRequest: Requestable {
     typealias Response = Void
     
-    var username: String
+    let username: String
     
     var url: String {
         // TODO
