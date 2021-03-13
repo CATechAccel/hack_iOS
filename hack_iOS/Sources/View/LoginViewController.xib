@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="loginButton" destination="lhC-Hg-4WO" id="44p-et-Ezd"/>
                 <outlet property="moveToSignUpViewButton" destination="5Rh-G4-LKf" id="zGk-ve-zoR"/>
+                <outlet property="passwordTextField" destination="EpF-Zh-Mfh" id="ppt-Iq-Nv4"/>
                 <outlet property="userNameTextField" destination="wGI-4B-eRo" id="tRn-eB-eAT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

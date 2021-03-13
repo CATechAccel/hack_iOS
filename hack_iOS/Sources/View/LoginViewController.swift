@@ -15,6 +15,14 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
             userNameTextField.delegate = self
         }
     }
+    
+    @IBOutlet private weak var passwordTextField: UITextField! {
+        didSet {
+            passwordTextField.placeholder = "パスワードを入力"
+            passwordTextField.delegate = self
+        }
+    }
+    
     @IBOutlet private weak var loginButton: UIButton! {
         didSet {
             loginButton.setTitle("Login", for: .normal)

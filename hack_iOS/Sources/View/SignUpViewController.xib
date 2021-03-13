@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignUpViewController" customModule="hack_iOS" customModuleProvider="target">
             <connections>
                 <outlet property="moveToLoginViewButton" destination="VZI-vw-nxb" id="DNM-7h-A7m"/>
+                <outlet property="passwordTextField" destination="Wxb-H7-bsL" id="3Ws-Df-BsU"/>
                 <outlet property="signUpButton" destination="TPD-zT-mQb" id="JNa-Bn-UhT"/>
                 <outlet property="userNameTextField" destination="M04-pQ-7Jt" id="V5S-6N-NMS"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
