@@ -10,8 +10,4 @@ import Foundation
 protocol Repository {
     associatedtype Response
     var apiClient: APIClient { get }
-
-    func fetch(completion: @escaping (Result<Response, APIError>) -> Void)
-    func post(postDictionary: [String: Any?], completion: @escaping (Result<Void, APIError>) -> Void)
-    func done(doneDictionary: [String: Any?], completion: @escaping (Result<Void, APIError>) -> Void)
 }
