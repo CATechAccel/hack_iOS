@@ -12,8 +12,12 @@ struct UserRepository: Repository {
     let apiClient = APIClient()
 
     func post(postDictionary: [String: Any?], completion: @escaping (Result<Void, APIError>) -> Void) {
-        guard let username = postDictionary["username"] as? String else { return }
-        let request = UserRequest(username: username)
+        guard
+            let username = postDictionary["username"] as? String,
+            let password = postDictionary["password"] as? String
+        else { return }
+        
+        let request = UserRequest(username: username, password: password)
         apiClient.request(request, completion: completion)
         return
     } 
