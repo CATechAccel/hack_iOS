@@ -11,6 +11,7 @@ struct UserRequest: Requestable {
     typealias Response = Void
     
     let username: String
+    let password: String
     
     var url: String {
         // TODO
@@ -28,7 +29,8 @@ struct UserRequest: Requestable {
     
     var body: Data? {
         let body: [String: Any] = [
-            "username": username
+            "username": username,
+            "password": password
         ]
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }

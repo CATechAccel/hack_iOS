@@ -18,6 +18,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             userNameTextField.delegate = self
         }
     }
+    
+    @IBOutlet private weak var passwordTextField: UITextField! {
+        didSet {
+            passwordTextField.placeholder = "パスワードを入力"
+            passwordTextField.delegate = self
+        }
+    }
+    
     @IBOutlet private weak var signUpButton: UIButton! {
         didSet {
             signUpButton.setTitle("Signup", for: .normal)
