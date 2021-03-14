@@ -37,6 +37,17 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    init(userRepository: UserRepository = .init()) {
+        self.userRepository = userRepository
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private let userRepository: UserRepository
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -46,6 +57,31 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func tapLoginButton() {
+        
+        let postDictionary = [
+            "username": userNameTextField.text,
+            "password": passwordTextField.text
+        ]
+        
+        userRepository.post(postDictionary: postDictionary) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success():
+                print("ログイン成功")
+            case .failure(let apiEerror):
+                switch apiEerror {
+                case .network(let statusCode):
+                    print("\(statusCode) エラー")
+                case .decode(let error):
+                    print(error)
+                case .noResponse:
+                    print("No Response Error")
+                case .unknown(let error):
+                    print(error)
+                }
+            }
+        }
+        
         let rootVC = ListViewController()
         let navVC = UINavigationController(rootViewController: rootVC)
         navVC.modalPresentationStyle = .fullScreen
@@ -58,6 +94,7 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
         navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)
     }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         userNameTextField.resignFirstResponder()
