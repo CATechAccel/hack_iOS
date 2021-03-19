@@ -8,7 +8,7 @@
 import Foundation
 
 struct UserRepository: Repository {
-    typealias Response = Token
+    typealias Response = String
     let apiClient = APIClient()
 
     func login(username: String,password: String, completion: @escaping (Result<Response, APIError>) -> Void) {

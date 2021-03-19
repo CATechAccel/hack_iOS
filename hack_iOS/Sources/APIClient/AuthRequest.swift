@@ -1,5 +1,5 @@
 //
-//  UserRequest.swift
+//  AuthRequest.swift
 //  hack_iOS
 //
 //  Created by 山根大生 on 2021/03/11.
@@ -13,7 +13,7 @@ enum AuthType {
 }
 
 struct AuthRequest: Requestable {
-    typealias Response = Token
+    typealias Response = String
     
     let username: String
     let password: String
@@ -21,7 +21,6 @@ struct AuthRequest: Requestable {
     let type: AuthType
     
     var url: String {
-        // TODO
         switch type {
         case .login:
             return "/login"
@@ -46,9 +45,9 @@ struct AuthRequest: Requestable {
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }
     
-    func decode(from data: Data) throws -> Token {
+    func decode(from data: Data) throws -> String {
         let decoder = JSONDecoder()
-        return try decoder.decode(Token.self, from: data)
+        return try decoder.decode(String.self, from: data)
     }
 }
 
