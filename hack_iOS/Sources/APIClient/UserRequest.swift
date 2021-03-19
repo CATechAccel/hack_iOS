@@ -7,23 +7,34 @@
 
 import Foundation
 
-struct UserRequest: Requestable {
-    typealias Response = Void
+enum AuthType {
+    case login
+    case signup
+}
+
+struct AuthRequest: Requestable {
+    typealias Response = Token
     
     let username: String
     let password: String
     
+    let type: AuthType
+    
     var url: String {
         // TODO
-        return ""
+        switch type {
+        case .login:
+            return "/login"
+        case .signup:
+            return "/users"
+        }
     }
     
     var httpMethod: HTTPMethod {
-        return HTTPMethod.POST
+        return .POST
     }
     
     var headers: [String: String] {
-        // TODO
         return [:]
     }
     
@@ -35,8 +46,9 @@ struct UserRequest: Requestable {
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }
     
-    func decode(from data: Data) throws -> Void {
-        return
+    func decode(from data: Data) throws -> Token {
+        let decoder = JSONDecoder()
+        return try decoder.decode(Token.self, from: data)
     }
 }
 

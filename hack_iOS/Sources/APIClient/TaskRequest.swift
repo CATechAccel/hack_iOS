@@ -16,7 +16,7 @@ struct TaskRequest: Requestable {
     }
     
     var httpMethod: HTTPMethod {
-        return HTTPMethod.GET
+        return .GET
     }
     
     var body: Data?

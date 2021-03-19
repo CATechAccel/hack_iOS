@@ -8,17 +8,18 @@
 import Foundation
 
 struct UserRepository: Repository {
-    typealias Response = Void
+    typealias Response = Token
     let apiClient = APIClient()
 
-    func post(postDictionary: [String: Any?], completion: @escaping (Result<Void, APIError>) -> Void) {
-        guard
-            let username = postDictionary["username"] as? String,
-            let password = postDictionary["password"] as? String
-        else { return }
-        
-        let request = UserRequest(username: username, password: password)
+    func login(username: String,password: String, completion: @escaping (Result<Response, APIError>) -> Void) {
+        let request = AuthRequest(username: username, password: password, type: .login)
         apiClient.request(request, completion: completion)
         return
-    } 
+    }
+    
+    func signup(username: String,password: String, completion: @escaping (Result<Response, APIError>) -> Void) {
+        let request = AuthRequest(username: username, password: password, type: .signup)
+        apiClient.request(request, completion: completion)
+        return
+    }
 }

@@ -19,7 +19,7 @@ struct AddTaskRequest: Requestable {
     }
     
     var httpMethod: HTTPMethod {
-        return HTTPMethod.POST
+        return .POST
     }
     
     var headers: [String: String] {

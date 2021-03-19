@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct Token {
+struct Token: Decodable {
     var token: String
 }
