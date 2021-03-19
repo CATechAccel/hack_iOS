@@ -37,9 +37,12 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    private let userRepository: UserRepository
-    init(userRepository: UserRepository = .init()) {
-        self.userRepository = userRepository
+    private let authRepository: AuthRepository
+    private let keychainAccessRepository: KeychainAccessRepository
+    
+    init(authRepository: AuthRepository = .init(), keychainAccessRepository: KeychainAccessRepository = .init()) {
+        self.keychainAccessRepository = keychainAccessRepository
+        self.authRepository = authRepository
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -50,7 +53,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -79,14 +81,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             let password = passwordTextField.text
         else {
             return
-        }
+        }        
         
-        let dict: [String: Any] = [
-            "username": username,
-            "password": password
-        ]
-        
-        userRepository.post(postDictionary: dict, completion: { [weak self] result in
+        authRepository.signup(username: username, password: password, completion: { [weak self] result in
+            guard let me = self else { return }
             switch result {
             case .failure(let error):
                 switch error {
@@ -99,7 +97,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                 case .noResponse:
                     print("No Response")
                 }
-            case .success(()):
+            case .success(let token):
+                me.keychainAccessRepository.save(token: token)
                 let rootVC = ListViewController()
                 let navVC = UINavigationController(rootViewController: rootVC)
                 navVC.modalPresentationStyle = .fullScreen

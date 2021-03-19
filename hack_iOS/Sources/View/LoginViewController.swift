@@ -37,8 +37,12 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    init(userRepository: UserRepository = .init()) {
-        self.userRepository = userRepository
+    private let authRepository: AuthRepository
+    private let keychainAccessRepository: KeychainAccessRepository
+    
+    init(authRepository: AuthRepository = .init(), keychainAccessRepository: KeychainAccessRepository = .init()) {
+        self.authRepository = authRepository
+        self.keychainAccessRepository = keychainAccessRepository
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -46,7 +50,6 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let userRepository: UserRepository
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,12 +83,8 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        let dict: [String: Any] = [
-            "username": username,
-            "password": password
-        ]
-        
-        userRepository.post(postDictionary: dict, completion: { [weak self] result in
+        authRepository.login(username: username, password: password, completion: { [weak self] result in
+            guard let me = self else { return }
             switch result {
             case .failure(let error):
                 switch error {
@@ -98,7 +97,8 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
                 case .noResponse:
                     print("No Response")
                 }
-            case .success(()):
+            case .success(let token):
+                me.keychainAccessRepository.save(token: token)
                 let rootVC = ListViewController()
                 let navVC = UINavigationController(rootViewController: rootVC)
                 navVC.modalPresentationStyle = .fullScreen
