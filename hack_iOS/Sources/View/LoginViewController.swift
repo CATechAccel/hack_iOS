@@ -57,35 +57,7 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func tapLoginButton() {
-        
-        let postDictionary = [
-            "username": userNameTextField.text,
-            "password": passwordTextField.text
-        ]
-        
-        userRepository.post(postDictionary: postDictionary) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success():
-                print("ログイン成功")
-            case .failure(let apiEerror):
-                switch apiEerror {
-                case .network(let statusCode):
-                    print("\(statusCode) エラー")
-                case .decode(let error):
-                    print(error)
-                case .noResponse:
-                    print("No Response Error")
-                case .unknown(let error):
-                    print(error)
-                }
-            }
-        }
-        
-        let rootVC = ListViewController()
-        let navVC = UINavigationController(rootViewController: rootVC)
-        navVC.modalPresentationStyle = .fullScreen
-        present(navVC, animated: true)
+        login()
     }
     
     @objc private func tapMoveToSignUpViewButton() {
@@ -95,9 +67,43 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
         present(navVC, animated: true)
     }
     
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         userNameTextField.resignFirstResponder()
         return true
+    }
+    
+    private func login() {
+        guard
+            let username = userNameTextField.text,
+            let password = passwordTextField.text
+        else {
+            return
+        }
+        
+        let dict: [String: Any] = [
+            "username": username,
+            "password": password
+        ]
+        
+        userRepository.post(postDictionary: dict, completion: { [weak self] result in
+            switch result {
+            case .failure(let error):
+                switch error {
+                case .decode(let error):
+                    print(error)
+                case .network(let error):
+                    print(error)
+                case .unknown(let error):
+                    print(error)
+                case .noResponse:
+                    print("No Response")
+                }
+            case .success(()):
+                let rootVC = ListViewController()
+                let navVC = UINavigationController(rootViewController: rootVC)
+                navVC.modalPresentationStyle = .fullScreen
+                self?.present(navVC, animated: true)
+            }
+        })
     }
 }
