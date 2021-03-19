@@ -15,16 +15,29 @@ class AddTaskViewController: UIViewController, UITextFieldDelegate {
             inputnameTextField.delegate = self
         }
     }
+    
     @IBOutlet weak var inputDescriptionTextView: UITextView! {
         didSet {
             inputDescriptionTextView.isScrollEnabled = false
         }
     }
+    
     @IBOutlet weak var addButton: UIButton! {
         didSet {
             addButton.setTitle("Add", for: .normal)
             addButton.addTarget(self, action: #selector(tapAddButton), for: .touchUpInside)
         }
+    }
+    
+    private let taskRepository: TaskRepository
+    
+    init(taskRepository: TaskRepository = .init()) {
+        self.taskRepository = taskRepository
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -36,11 +49,45 @@ class AddTaskViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func tapAddButton() {
-        self.navigationController?.popViewController(animated: true)
+        addTask()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         inputnameTextField.resignFirstResponder()
         return true
+    }
+    
+    private func addTask() {
+        
+        guard
+            let name = inputnameTextField.text,
+            let `description` = inputDescriptionTextView.text
+        else {
+            return
+        }
+        
+        let dict: [String: Any] = [
+            "name": name,
+            "description": description
+        ]
+    
+        
+        taskRepository.post(postDictionary: dict, completion: { [weak self] result in
+            switch result {
+            case .failure(let error):
+                switch error {
+                case .decode(let error):
+                    print(error)
+                case .network(let error):
+                    print(error)
+                case .unknown(let error):
+                    print(error)
+                case .noResponse:
+                    print("No Response")
+                }
+            case .success(()):
+                self?.navigationController?.popViewController(animated: true)
+            }
+        })
     }
 }

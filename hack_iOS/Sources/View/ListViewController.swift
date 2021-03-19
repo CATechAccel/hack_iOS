@@ -74,7 +74,6 @@ final class ListViewController: UIViewController {
 }
 
 extension ListViewController: UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // TODO
         mock.tasks.count
@@ -85,6 +84,4 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configure(with: mock.tasks[indexPath.row])
         return cell
     }
-    
-    
 }
