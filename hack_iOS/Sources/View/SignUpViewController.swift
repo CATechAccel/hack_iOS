@@ -8,9 +8,6 @@
 import UIKit
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
     
     @IBOutlet private weak var userNameTextField: UITextField! {
         didSet {
@@ -40,16 +37,28 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    private let userRepository: UserRepository
+    init(userRepository: UserRepository = .init()) {
+        self.userRepository = userRepository
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
     @objc private func tapSignupButton() {
-        let rootVC = ListViewController()
-        let navVC = UINavigationController(rootViewController: rootVC)
-        navVC.modalPresentationStyle = .fullScreen
-        present(navVC, animated: true)
+        signup()
     }
     
     @objc private func tapMoveToLoginViewButton() {
@@ -62,5 +71,40 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         userNameTextField.resignFirstResponder()
         return true
+    }
+    
+    private func signup() {
+        guard
+            let username = userNameTextField.text,
+            let password = passwordTextField.text
+        else {
+            return
+        }
+        
+        let dict: [String: Any] = [
+            "username": username,
+            "password": password
+        ]
+        
+        userRepository.post(postDictionary: dict, completion: { [weak self] result in
+            switch result {
+            case .failure(let error):
+                switch error {
+                case .decode(let error):
+                    print(error)
+                case .network(let error):
+                    print(error)
+                case .unknown(let error):
+                    print(error)
+                case .noResponse:
+                    print("No Response")
+                }
+            case .success(()):
+                let rootVC = ListViewController()
+                let navVC = UINavigationController(rootViewController: rootVC)
+                navVC.modalPresentationStyle = .fullScreen
+                self?.present(navVC, animated: true)
+            }
+        })
     }
 }
