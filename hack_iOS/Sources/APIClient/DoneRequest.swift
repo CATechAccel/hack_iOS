@@ -10,6 +10,8 @@ import Foundation
 struct DoneRequest: Requestable {
     typealias Response = Void
     
+    private let repository = KeychainAccessRepository()
+    
     let id: String
     
     var url: String {
@@ -22,8 +24,7 @@ struct DoneRequest: Requestable {
     }
     
     var headers: [String: String] {
-        // TODO
-        return [:]
+        return ["Authorization":"Bearer \(repository.get() ?? "" )"]
     }
     
     var body: Data? {

@@ -10,20 +10,21 @@ import Foundation
 struct TaskRequest: Requestable {
     typealias Response = [Task]
     
+    private let repository = KeychainAccessRepository()
+    
     var url: String {
         // TODO
         return ""
     }
     
     var httpMethod: HTTPMethod {
-        return HTTPMethod.GET
+        return .GET
     }
     
     var body: Data?
     
-    var headers: [String : String] {
-        // TODO
-        return [:]
+    var headers: [String: String] {
+        return ["Authorization":"Bearer \(repository.get() ?? "" )"]
     }
     
     func decode(from data: Data) throws -> [Task] {
