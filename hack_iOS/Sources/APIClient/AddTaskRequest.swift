@@ -13,6 +13,8 @@ struct AddTaskRequest: Requestable {
     let name: String
     let description: String
     
+    private let repository = KeychainAccessRepository()
+    
     var url: String {
         // TODO
         return ""
@@ -23,8 +25,7 @@ struct AddTaskRequest: Requestable {
     }
     
     var headers: [String: String] {
-        // TODO
-        return [:]
+        return ["Authorization":"Bearer \(repository.get() ?? "" )"]
     }
     
     var body: Data? {
