@@ -18,8 +18,13 @@ final class TaskTableViewCell: UITableViewCell {
     }
     @IBOutlet private weak var doneButton: UIButton! {
         didSet {
-            // TODO bool値を参照して、画像を変更できるようにする
+            // TODO: bool値を参照して、画像を変更できるようにする
             doneButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
         }
+    }
+    
+    func configure(with task: Task) {
+        nameLabel.text = task.name
+        descriptionTextView.text = task.description
     }
 }
