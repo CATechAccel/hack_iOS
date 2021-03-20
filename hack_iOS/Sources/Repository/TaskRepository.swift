@@ -16,14 +16,12 @@ struct TaskRepository: Repository {
         apiClient.request(request, completion: completion)
     }
     
-    func post(postDictionary: [String: Any?], completion: @escaping (Result<Void, APIError>) -> Void) {
-        guard let name = postDictionary["name"] as? String, let description  = postDictionary["discription"] as? String else { return }
+    func post(name: String, description: String, completion: @escaping (Result<Void, APIError>) -> Void) {
         let request = AddTaskRequest(name: name, description: description)
         apiClient.request(request, completion: completion)
     }
     
-    func done(doneDictionary: [String: Any?], completion: @escaping (Result<Void, APIError>) -> Void) {
-        guard let id = doneDictionary["id"] as? String else { return }
+    func done(id: String, completion: @escaping (Result<Void, APIError>) -> Void) {
         let request = DoneRequest(id: id)
         apiClient.request(request, completion: completion)
     }
