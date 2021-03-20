@@ -16,7 +16,7 @@ struct TaskRepository: Repository {
         apiClient.request(request, completion: completion)
     }
     
-    func post(name: String, description: String, completion: @escaping (Result<Void, APIError>) -> Void) {
+    func post(name: String, description: String?, completion: @escaping (Result<Void, APIError>) -> Void) {
         let request = AddTaskRequest(name: name, description: description)
         apiClient.request(request, completion: completion)
     }
