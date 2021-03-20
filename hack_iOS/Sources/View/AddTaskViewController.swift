@@ -66,13 +66,7 @@ class AddTaskViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        let dict: [String: Any] = [
-            "name": name,
-            "description": description
-        ]
-    
-        
-        taskRepository.post(postDictionary: dict, completion: { [weak self] result in
+        taskRepository.post(name: name, description: description, completion: { [weak self] result in
             switch result {
             case .failure(let error):
                 switch error {
