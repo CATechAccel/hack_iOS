@@ -8,6 +8,7 @@ target 'hack_iOS' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'KeychainAccess'
+  pod 'CryptoSwift'
 
   target 'hack_iOSTests' do
     inherit! :search_paths

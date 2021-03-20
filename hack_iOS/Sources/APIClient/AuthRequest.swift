@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CryptoSwift
 
 enum AuthType {
     case login
@@ -38,9 +39,10 @@ struct AuthRequest: Requestable {
     }
     
     var body: Data? {
+        let hashedPassword = password.sha256()
         let body: [String: Any] = [
             "username": username,
-            "password": password
+            "password": hashedPassword
         ]
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }
