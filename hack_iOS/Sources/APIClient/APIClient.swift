@@ -9,7 +9,10 @@ import Foundation
 
 struct APIClient {
     func request<T: Requestable>(_ requestable: T, completion: @escaping (Result<T.Response, APIError>) -> Void) {
-        guard let request = requestable.urlRequest else { return }
+        guard let request = requestable.urlRequest else {
+            print("Request Error")
+            return
+        }
         let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
             if let error = error {
                 completion(.failure(APIError.unknown(error)))

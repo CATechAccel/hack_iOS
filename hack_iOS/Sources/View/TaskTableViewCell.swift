@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class TaskTableViewCell: UITableViewCell {
     
@@ -16,32 +18,56 @@ final class TaskTableViewCell: UITableViewCell {
             descriptionTextView.isEditable = false
         }
     }
-    @IBOutlet private weak var doneButton: UIButton! {
+    @IBOutlet private(set) weak var doneButton: UIButton! {
         didSet {
             // TODO: bool値を参照して、画像を変更できるようにする
-            doneButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
             doneButton.addTarget(self, action: #selector(tapDoneButton), for: .touchUpInside)
         }
     }
+    
+    private var isDone: Bool = false {
+        didSet {
+            if isDone {
+                doneButton.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+            }
+            else {
+                doneButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+            }
+        }
+    }
+        
+    private let isDoneRelay = PublishRelay<Void>()
+    var isDoneObservable: Observable<Void> {
+        isDoneRelay.asObservable()
+    }
 
     private var taskId: String = ""
+    var disposeBag = DisposeBag()
     let taskRepository = TaskRepository()
     
     func configure(with task: Task) {
+        isDone = task.done
         taskId = task.id
         nameLabel.text = task.name
         descriptionTextView.text = task.description
     }
-        
+    
+    override func prepareForReuse() {
+        disposeBag = DisposeBag()
+    }
+    
     @objc private func tapDoneButton() {
         done()
     }
     
     private func done() {
-        taskRepository.done(id: taskId, completion: { result in
+        taskRepository.done(id: taskId, completion: { [weak self] result in
+            guard let me = self else { return }
             switch result {
             case .success(()):
-                print("success")
+                me.isDone = true
+                me.isDoneRelay.accept(())
+                
             case .failure(let error):
                 switch error {
                 case .decode(let error):

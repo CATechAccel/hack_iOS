@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 final class ListViewController: UIViewController {
 
@@ -81,7 +82,15 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskTableViewCell", for: indexPath) as! TaskTableViewCell
+        
         cell.configure(with: mock.tasks[indexPath.row])
+        cell.isDoneObservable
+            .subscribe(Binder(self) { me, _ in
+                //参考: Task構造体はvar型でもよい？
+                me.mock.tasks[indexPath.row].done = true
+            })
+            .disposed(by: cell.disposeBag)
+        
         return cell
     }
 }
