@@ -32,8 +32,7 @@ final class TaskTableViewCell: UITableViewCell {
         nameLabel.text = task.name
         descriptionTextView.text = task.description
     }
-    
-    
+        
     @objc private func tapDoneButton() {
         done()
     }

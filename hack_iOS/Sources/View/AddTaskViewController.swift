@@ -59,12 +59,8 @@ class AddTaskViewController: UIViewController, UITextFieldDelegate {
     
     private func addTask() {
         
-        guard
-            let name = inputnameTextField.text,
-            let `description` = inputDescriptionTextView.text
-        else {
-            return
-        }
+        guard let name = inputnameTextField.text else { return }
+        let `description` = inputDescriptionTextView.text
         
         taskRepository.post(name: name, description: description, completion: { [weak self] result in
             switch result {

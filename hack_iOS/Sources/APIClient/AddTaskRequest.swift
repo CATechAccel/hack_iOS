@@ -11,7 +11,7 @@ struct AddTaskRequest: Requestable {
     typealias Response = Void
     
     let name: String
-    let description: String
+    let description: String?
     
     private let repository = KeychainAccessRepository()
     
@@ -29,7 +29,7 @@ struct AddTaskRequest: Requestable {
     }
     
     var body: Data? {
-        let body: [String: Any] = [
+        let body: [String: Any?] = [
             "name": name,
             "description": description
         ]
