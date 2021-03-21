@@ -14,8 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-//        window?.rootViewController = UINavigationController(rootViewController:  LoginViewController())
-        window?.rootViewController = UINavigationController(rootViewController:  ListViewController())
+        
+        // TODO: キーチェーンの状態によるログイン画面か一覧画面か判断させる
+        
+        window?.rootViewController = UINavigationController(rootViewController:  LoginViewController())
+//        window?.rootViewController = UINavigationController(rootViewController:  ListViewController())
         window?.makeKeyAndVisible()
         return true
     }
