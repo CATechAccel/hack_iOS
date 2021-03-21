@@ -3,4 +3,4 @@
 ## エンドポイント参考
 
 <Swagger>
-https://github.com/CATechAccel/hack-ios-server/blob/feature/user/api-document.yml
+https://github.com/CATechAccel/hack-ios-server/blob/main/api-document.yml
