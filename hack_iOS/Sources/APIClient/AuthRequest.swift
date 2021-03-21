@@ -24,9 +24,9 @@ struct AuthRequest: Requestable {
     var url: String {
         switch type {
         case .login:
-            return "/login"
+            return "https://hack-ios-server-kacg6ymbjq-uc.a.run.app/login"
         case .signup:
-            return "/users"
+            return "https://hack-ios-server-kacg6ymbjq-uc.a.run.app/users"
         }
     }
     

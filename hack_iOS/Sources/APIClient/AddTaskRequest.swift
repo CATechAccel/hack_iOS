@@ -17,7 +17,7 @@ struct AddTaskRequest: Requestable {
     
     var url: String {
         // TODO
-        return ""
+        return "https://hack-ios-server-kacg6ymbjq-uc.a.run.app/tasks"
     }
     
     var httpMethod: HTTPMethod {
