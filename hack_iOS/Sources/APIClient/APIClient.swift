@@ -26,6 +26,7 @@ struct APIClient {
             // TODO どんなエラーが返ってくるかについてサーバーチームと要相談
             if case 200..<300 = response.statusCode {
                 do {
+                    print(String(data:data, encoding: .utf8) ?? "")
                     let model = try requestable.decode(from: data)
                     completion(.success(model))
                 } catch let decodeError {

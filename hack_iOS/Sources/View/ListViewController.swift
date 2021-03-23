@@ -37,9 +37,6 @@ final class ListViewController: UIViewController {
         super.viewDidLoad()
         setup()
         fetch()
-        
-        //TODO: モックデータ用（後々消去！）
-        mock.setTasks()
     }
     
     private func fetch() {
@@ -47,7 +44,10 @@ final class ListViewController: UIViewController {
             guard let self = self else { return }
             switch result {
             case .success(let model):
-                self.mock.tasks = model
+                self.mock.tasks = model.tasks
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             case .failure(let apiEerror):
                 switch apiEerror {
                 case .network(let statusCode):
@@ -87,7 +87,7 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
         cell.isDoneObservable
             .subscribe(Binder(self) { me, _ in
                 //参考: Task構造体はvar型でもよい？
-                me.mock.tasks[indexPath.row].done = true
+                me.mock.tasks[indexPath.row].isDone = true
             })
             .disposed(by: cell.disposeBag)
         

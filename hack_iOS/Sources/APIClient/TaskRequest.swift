@@ -8,7 +8,7 @@
 import Foundation
 
 struct TaskRequest: Requestable {
-    typealias Response = [Task]
+    typealias Response = TaskSource
     
     private let repository = KeychainAccessRepository()
     
@@ -27,8 +27,8 @@ struct TaskRequest: Requestable {
         return ["Authorization":"Bearer \(repository.get() ?? "" )"]
     }
     
-    func decode(from data: Data) throws -> [Task] {
+    func decode(from data: Data) throws -> TaskSource {
         let decoder = JSONDecoder()
-        return try decoder.decode([Task].self, from: data)
+        return try decoder.decode(TaskSource.self, from: data)
     }
 }

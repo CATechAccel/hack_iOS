@@ -98,11 +98,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                     print("No Response")
                 }
             case .success(let token):
-                me.keychainAccessRepository.save(token: token)
-                let rootVC = ListViewController()
-                let navVC = UINavigationController(rootViewController: rootVC)
-                navVC.modalPresentationStyle = .fullScreen
-                self?.present(navVC, animated: true)
+                guard let authToken = token["token"] else { return }
+                me.keychainAccessRepository.save(token: authToken)
+                DispatchQueue.main.async {
+                    let rootVC = ListViewController()
+                    let navVC = UINavigationController(rootViewController: rootVC)
+                    navVC.modalPresentationStyle = .fullScreen
+                    self?.present(navVC, animated: true)
+                }
+                
             }
         })
     }

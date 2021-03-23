@@ -7,9 +7,14 @@
 
 import Foundation
 
+struct TaskSource: Decodable {
+    let tasks: [Task]
+}
+
+
 struct Task: Decodable {
     let id: String
     let name: String
     let description: String?
-    var done: Bool
+    var isDone: Bool
 }
