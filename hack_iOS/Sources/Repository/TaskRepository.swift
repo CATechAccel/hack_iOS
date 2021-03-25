@@ -8,7 +8,7 @@
 import Foundation
 
 struct TaskRepository: Repository {
-    typealias Response = [Task]
+    typealias Response = TaskSource
     let apiClient = APIClient()
     
     func fetch(completion: @escaping (Result<Response, APIError>) -> Void) {

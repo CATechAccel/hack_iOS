@@ -14,7 +14,7 @@ enum AuthType {
 }
 
 struct AuthRequest: Requestable {
-    typealias Response = String
+    typealias Response = [String: String]
     
     let username: String
     let password: String
@@ -24,9 +24,9 @@ struct AuthRequest: Requestable {
     var url: String {
         switch type {
         case .login:
-            return "/login"
+            return "https://hack-ios-server-kacg6ymbjq-uc.a.run.app/login"
         case .signup:
-            return "/users"
+            return "https://hack-ios-server-kacg6ymbjq-uc.a.run.app/users"
         }
     }
     
@@ -47,9 +47,9 @@ struct AuthRequest: Requestable {
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }
     
-    func decode(from data: Data) throws -> String {
+    func decode(from data: Data) throws -> [String: String] {
         let decoder = JSONDecoder()
-        return try decoder.decode(String.self, from: data)
+        return try decoder.decode([String : String].self, from: data)
     }
 }
 

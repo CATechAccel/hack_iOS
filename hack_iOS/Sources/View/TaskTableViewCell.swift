@@ -28,25 +28,29 @@ final class TaskTableViewCell: UITableViewCell {
     private var isDone: Bool = false {
         didSet {
             if isDone {
-                doneButton.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+                DispatchQueue.main.async { [weak self] in
+                    self?.doneButton.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+                }
             }
             else {
-                doneButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+                DispatchQueue.main.async { [weak self] in
+                    self?.doneButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+                }
             }
         }
     }
-        
+    
     private let isDoneRelay = PublishRelay<Void>()
     var isDoneObservable: Observable<Void> {
         isDoneRelay.asObservable()
     }
-
+    
     private var taskId: String = ""
     var disposeBag = DisposeBag()
     let taskRepository = TaskRepository()
     
     func configure(with task: Task) {
-        isDone = task.done
+        isDone = task.isDone
         taskId = task.id
         nameLabel.text = task.name
         descriptionTextView.text = task.description

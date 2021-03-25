@@ -8,13 +8,13 @@
 import Foundation
 
 struct TaskRequest: Requestable {
-    typealias Response = [Task]
+    typealias Response = TaskSource
     
     private let repository = KeychainAccessRepository()
     
     var url: String {
         // TODO
-        return ""
+        return "https://hack-ios-server-kacg6ymbjq-uc.a.run.app/tasks"
     }
     
     var httpMethod: HTTPMethod {
@@ -27,8 +27,8 @@ struct TaskRequest: Requestable {
         return ["Authorization":"Bearer \(repository.get() ?? "" )"]
     }
     
-    func decode(from data: Data) throws -> [Task] {
+    func decode(from data: Data) throws -> TaskSource {
         let decoder = JSONDecoder()
-        return try decoder.decode([Task].self, from: data)
+        return try decoder.decode(TaskSource.self, from: data)
     }
 }
