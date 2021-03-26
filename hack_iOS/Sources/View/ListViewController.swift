@@ -29,6 +29,7 @@ final class ListViewController: UIViewController {
     }
     
     private let taskRepository: TaskRepository
+    private let disposeBag = DisposeBag()
     
     //TODO: モックデータ用（後々消去！）
     private let mock: Mock = .shared
@@ -40,16 +41,17 @@ final class ListViewController: UIViewController {
     }
     
     private func fetch() {
-        taskRepository.fetch() { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let model):
-                self.mock.tasks = model.tasks
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            case .failure(let apiEerror):
-                switch apiEerror {
+        taskRepository.fetch()
+            .subscribe(on: SerialDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .subscribe( onSuccess: { [weak self] model in
+                guard let me = self else { return }
+                me.mock.tasks = model.tasks
+                me.tableView.reloadData()
+            },
+            onFailure: { error in
+                guard let error = error as? APIError else { return }
+                switch error {
                 case .network(let statusCode):
                     print("\(statusCode) エラー")
                 case .decode(let error):
@@ -59,8 +61,8 @@ final class ListViewController: UIViewController {
                 case .unknown(let error):
                     print(error)
                 }
-            }
-        }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setup() {
