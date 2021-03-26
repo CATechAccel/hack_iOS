@@ -23,8 +23,8 @@ struct TaskRepository: Repository {
         return apiClient.request(request)
     }
     
-    func done(id: String) -> Single<Void> {
-        let request = DoneRequest(id: id)
+    func done(taskIDs: [String]) -> Single<Void> {
+        let request = DoneRequest(taskIDs: taskIDs)
         return apiClient.request(request)
     }
 }

@@ -65,7 +65,8 @@ final class TaskTableViewCell: UITableViewCell {
     }
     
     private func done() {
-        taskRepository.done(id: taskId)
+
+        taskRepository.done(taskIDs: [taskId])
             .subscribe(on: SerialDispatchQueueScheduler(qos: .background))
             .observe(on: MainScheduler.instance)
             .subscribe( onSuccess: { [weak self] token in

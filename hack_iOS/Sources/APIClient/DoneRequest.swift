@@ -12,7 +12,7 @@ struct DoneRequest: Requestable {
     
     private let repository = KeychainAccessRepository()
     
-    let id: String
+    let taskIDs: [String]
     
     var url: String {
         // TODO
@@ -29,7 +29,7 @@ struct DoneRequest: Requestable {
     
     var body: Data? {
         let body: [String: Any] = [
-            "id": id
+            "taskIds": taskIDs
         ]
         return try! JSONSerialization.data(withJSONObject: body, options: [])
     }
