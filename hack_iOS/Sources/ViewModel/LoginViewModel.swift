@@ -26,6 +26,7 @@ protocol LoginViewModelOutput {
 }
 
 class LoginViewModel: LoginViewModelType, LoginViewModelInput, LoginViewModelOutput {
+    
     struct Dependency {
         var authrepository: AuthRepository
         var keychainAccessRepository: KeychainAccessRepository
@@ -53,7 +54,10 @@ class LoginViewModel: LoginViewModelType, LoginViewModelInput, LoginViewModelOut
         
         let loginEvent = loginButtonTappedRelay.asObservable()
             .withLatestFrom(username)
-            .withLatestFrom(password) { ($0, $1) }
+            .withLatestFrom(password) { ($0, $1) } // optionalの場合はエラーを吐く....
+            .filter { username, password in
+                !username.isEmpty && !password.isEmpty
+            }
             .flatMap { username, password in
                 dependency.authrepository.login(username: username, password: password)
                     .asObservable().materialize()
@@ -65,9 +69,6 @@ class LoginViewModel: LoginViewModelType, LoginViewModelInput, LoginViewModelOut
             .subscribe( Binder(self) { me, token in
                 guard let authToken = token["token"] else { return }
                 me.dependency.keychainAccessRepository.save(token: authToken)
-                let rootVC = ListViewController()
-                let navVC = UINavigationController(rootViewController: rootVC)
-                navVC.modalPresentationStyle = .fullScreen
                 me.loginSucceededRelay.accept(())
             })
             .disposed(by: disposeBag)
@@ -88,8 +89,6 @@ class LoginViewModel: LoginViewModelType, LoginViewModelInput, LoginViewModelOut
                 }
             })
             .disposed(by: disposeBag)
-        
-     
     }
     
     func loginButtonTapped() { loginButtonTappedRelay.accept(()) }
