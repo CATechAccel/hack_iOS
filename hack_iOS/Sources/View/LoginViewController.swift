@@ -39,13 +39,16 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    private let authRepository: AuthRepository
-    private let keychainAccessRepository: KeychainAccessRepository
     private let disposeBag = DisposeBag()
+    private let viewModel: LoginViewModelType
     
-    init(authRepository: AuthRepository = .init(), keychainAccessRepository: KeychainAccessRepository = .init()) {
-        self.authRepository = authRepository
-        self.keychainAccessRepository = keychainAccessRepository
+    init(
+        authRepository: AuthRepository = .init(),
+        keychainAccessRepository: KeychainAccessRepository = .init()
+    ){
+        self.viewModel = LoginViewModel(
+            dependency: .init(authrepository: authRepository, keychainAccessRepository: keychainAccessRepository)
+        )
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -63,7 +66,7 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func tapLoginButton() {
-        login()
+//        login()
     }
     
     @objc private func tapMoveToSignUpViewButton() {
@@ -78,39 +81,39 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    private func login() {
-        guard
-            let username = userNameTextField.text,
-            let password = passwordTextField.text
-        else {
-            return
-        }
-        
-        authRepository.login(username: username, password: password)
-            .subscribe(on: SerialDispatchQueueScheduler(qos: .background))
-            .observe(on: MainScheduler.instance)
-            .subscribe( onSuccess: { [weak self] token in
-                guard let me = self else { return }
-                guard let authToken = token["token"] else { return }
-                me.keychainAccessRepository.save(token: authToken)
-                let rootVC = ListViewController()
-                let navVC = UINavigationController(rootViewController: rootVC)
-                navVC.modalPresentationStyle = .fullScreen
-                self?.present(navVC, animated: true)
-            },
-            onFailure: { error in
-                guard let error = error as? APIError else { return }
-                switch error {
-                case .decode(let error):
-                    print(error)
-                case .network(let error):
-                    print(error)
-                case .unknown(let error):
-                    print(error)
-                case .noResponse:
-                    print("No Response")
-                }
-            })
-            .disposed(by: disposeBag)
-    }
+//    private func login() {
+//        guard
+//            let username = userNameTextField.text,
+//            let password = passwordTextField.text
+//        else {
+//            return
+//        }
+//
+//        authRepository.login(username: username, password: password)
+//            .subscribe(on: SerialDispatchQueueScheduler(qos: .background))
+//            .observe(on: MainScheduler.instance)
+//            .subscribe( onSuccess: { [weak self] token in
+//                guard let me = self else { return }
+//                guard let authToken = token["token"] else { return }
+//                me.keychainAccessRepository.save(token: authToken)
+//                let rootVC = ListViewController()
+//                let navVC = UINavigationController(rootViewController: rootVC)
+//                navVC.modalPresentationStyle = .fullScreen
+//                self?.present(navVC, animated: true)
+//            },
+//            onFailure: { error in
+//                guard let error = error as? APIError else { return }
+//                switch error {
+//                case .decode(let error):
+//                    print(error)
+//                case .network(let error):
+//                    print(error)
+//                case .unknown(let error):
+//                    print(error)
+//                case .noResponse:
+//                    print("No Response")
+//                }
+//            })
+//            .disposed(by: disposeBag)
+//    }
 }
