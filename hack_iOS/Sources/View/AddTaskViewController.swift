@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class AddTaskViewController: UIViewController, UITextFieldDelegate {
     
@@ -30,6 +32,7 @@ class AddTaskViewController: UIViewController, UITextFieldDelegate {
     }
     
     private let taskRepository: TaskRepository
+    private let disposeBag = DisposeBag()
     
     init(taskRepository: TaskRepository = .init()) {
         self.taskRepository = taskRepository
@@ -62,9 +65,14 @@ class AddTaskViewController: UIViewController, UITextFieldDelegate {
         guard let name = inputnameTextField.text else { return }
         let `description` = inputDescriptionTextView.text
         
-        taskRepository.post(name: name, description: description, completion: { [weak self] result in
-            switch result {
-            case .failure(let error):
+        taskRepository.post(name: name, description: description)
+            .subscribe(on: SerialDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .subscribe(onSuccess: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            },
+            onFailure: { error in
+                guard let error = error as? APIError else { return }
                 switch error {
                 case .decode(let error):
                     print(error)
@@ -75,11 +83,7 @@ class AddTaskViewController: UIViewController, UITextFieldDelegate {
                 case .noResponse:
                     print("No Response")
                 }
-            case .success(()):
-                DispatchQueue.main.async {
-                    self?.navigationController?.popViewController(animated: true)
-                }
-            }
-        })
+            })
+            .disposed(by: disposeBag)
     }
 }
