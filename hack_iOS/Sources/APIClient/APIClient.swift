@@ -6,37 +6,41 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 struct APIClient {
-    func request<T: Requestable>(_ requestable: T, completion: @escaping (Result<T.Response, APIError>) -> Void) {
-        guard let request = requestable.urlRequest else {
-            print("Request Error")
-            return
-        }
-        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
-            if let error = error {
-                completion(.failure(APIError.unknown(error)))
-                return
+    
+    func request<T: Requestable>(_ requestable: T) -> Single<T.Response> {
+        Single<T.Response>.create { observer in
+            guard let request = requestable.urlRequest else {
+                fatalError("Request Error")
             }
-            
-            guard let data = data, let response = response as? HTTPURLResponse else {
-                completion(.failure(APIError.noResponse))
-                return
-            }
-            // TODO どんなエラーが返ってくるかについてサーバーチームと要相談
-            if case 200..<300 = response.statusCode {
-                do {
-                    print(String(data:data, encoding: .utf8) ?? "")
-                    let model = try requestable.decode(from: data)
-                    completion(.success(model))
-                } catch let decodeError {
-                    completion(.failure(APIError.decode(decodeError)))
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+                if let error = error {
+                    observer(.failure(APIError.unknown(error)))
+                    return
                 }
-            } else {
-                completion(.failure(APIError.network(response.statusCode)))
-            }
-        })
-        task.resume()
+                
+                guard let data = data, let response = response as? HTTPURLResponse else {
+                    observer(.failure(APIError.noResponse))
+                    return
+                }
+                // TODO どんなエラーが返ってくるかについてサーバーチームと要相談
+                if case 200..<300 = response.statusCode {
+                    do {
+                        let model = try requestable.decode(from: data)
+                        observer(.success(model))
+                    } catch let decodeError {
+                        observer(.failure(APIError.decode(decodeError)))
+                    }
+                } else {
+                    observer(.failure(APIError.network(response.statusCode)))
+                }
+            })
+            task.resume()
+            return Disposables.create()
+        }
     }
 }
 
