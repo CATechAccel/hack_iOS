@@ -25,7 +25,7 @@ protocol LoginViewModelOutput {
     var loginSucceeded: Signal<Void> { get }
 }
 
-class LoginViewModel: LoginViewModelType, LoginViewModelInput, LoginViewModelOutput {
+final class LoginViewModel: LoginViewModelType, LoginViewModelInput, LoginViewModelOutput {
     
     struct Dependency {
         var authrepository: AuthRepository
