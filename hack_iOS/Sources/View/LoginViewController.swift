@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class LoginViewController: UIViewController, UITextFieldDelegate {
     
@@ -39,6 +41,7 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
     
     private let authRepository: AuthRepository
     private let keychainAccessRepository: KeychainAccessRepository
+    private let disposeBag = DisposeBag()
     
     init(authRepository: AuthRepository = .init(), keychainAccessRepository: KeychainAccessRepository = .init()) {
         self.authRepository = authRepository
@@ -83,10 +86,20 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        authRepository.login(username: username, password: password, completion: { [weak self] result in
-            guard let me = self else { return }
-            switch result {
-            case .failure(let error):
+        authRepository.login(username: username, password: password)
+            .subscribe(on: SerialDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .subscribe( onSuccess: { [weak self] token in
+                guard let me = self else { return }
+                guard let authToken = token["token"] else { return }
+                me.keychainAccessRepository.save(token: authToken)
+                let rootVC = ListViewController()
+                let navVC = UINavigationController(rootViewController: rootVC)
+                navVC.modalPresentationStyle = .fullScreen
+                self?.present(navVC, animated: true)
+            },
+            onFailure: { error in
+                guard let error = error as? APIError else { return }
                 switch error {
                 case .decode(let error):
                     print(error)
@@ -97,16 +110,7 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
                 case .noResponse:
                     print("No Response")
                 }
-            case .success(let token):
-                guard let authToken = token["token"] else { return }
-                me.keychainAccessRepository.save(token: authToken)
-                DispatchQueue.main.async {
-                    let rootVC = ListViewController()
-                    let navVC = UINavigationController(rootViewController: rootVC)
-                    navVC.modalPresentationStyle = .fullScreen
-                    self?.present(navVC, animated: true)
-                }
-            }
-        })
+            })
+            .disposed(by: disposeBag)
     }
 }
