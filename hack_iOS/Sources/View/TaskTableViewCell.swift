@@ -65,14 +65,16 @@ final class TaskTableViewCell: UITableViewCell {
     }
     
     private func done() {
-        taskRepository.done(id: taskId, completion: { [weak self] result in
-            guard let me = self else { return }
-            switch result {
-            case .success(()):
+        taskRepository.done(id: taskId)
+            .subscribe(on: SerialDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .subscribe( onSuccess: { [weak self] token in
+                guard let me = self else { return }
                 me.isDone = true
                 me.isDoneRelay.accept(())
-                
-            case .failure(let error):
+            },
+            onFailure: { error in
+                guard let error = error as? APIError else { return }
                 switch error {
                 case .decode(let error):
                     print(error)
@@ -83,7 +85,7 @@ final class TaskTableViewCell: UITableViewCell {
                 case .noResponse:
                     print("No Response")
                 }
-            }
-        })
+            })
+            .disposed(by: disposeBag)
     }
 }
