@@ -21,8 +21,8 @@ struct TaskRepository: Repository {
         apiClient.request(request, completion: completion)
     }
     
-    func done(id: String, completion: @escaping (Result<Void, APIError>) -> Void) {
-        let request = DoneRequest(id: id)
+    func done(taskIDs: [String], completion: @escaping (Result<Void, APIError>) -> Void) {
+        let request = DoneRequest(taskIDs: taskIDs)
         apiClient.request(request, completion: completion)
     }
 }
