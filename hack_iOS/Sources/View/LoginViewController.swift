@@ -28,24 +28,25 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet private weak var loginButton: UIButton! {
         didSet {
             loginButton.setTitle("Login", for: .normal)
-            loginButton.addTarget(self, action: #selector(tapLoginButton), for: .touchUpInside)
         }
     }
     
     @IBOutlet private weak var moveToSignUpViewButton: UIButton! {
         didSet {
             moveToSignUpViewButton.setTitle("SignupView", for: .normal)
-            moveToSignUpViewButton.addTarget(self, action: #selector(tapMoveToSignUpViewButton), for: .touchUpInside)
         }
     }
     
-    private let authRepository: AuthRepository
-    private let keychainAccessRepository: KeychainAccessRepository
     private let disposeBag = DisposeBag()
+    private let viewModel: LoginViewModelType
     
-    init(authRepository: AuthRepository = .init(), keychainAccessRepository: KeychainAccessRepository = .init()) {
-        self.authRepository = authRepository
-        self.keychainAccessRepository = keychainAccessRepository
+    init(
+        authRepository: AuthRepository = .init(),
+        keychainAccessRepository: KeychainAccessRepository = .init()
+    ){
+        self.viewModel = LoginViewModel(
+            dependency: .init(authrepository: authRepository, keychainAccessRepository: keychainAccessRepository)
+        )
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -56,61 +57,53 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bindViewModel()
+    }
+    
+    private func bindViewModel() {
+        
+        //input
+        userNameTextField.rx.text.orEmpty.asObservable()
+            .bind(to: viewModel.input.username)
+            .disposed(by: disposeBag)
+        
+        passwordTextField.rx.text.orEmpty.asObservable()
+            .bind(to: viewModel.input.password)
+            .disposed(by: disposeBag)
+        
+        loginButton.rx.tap
+            .bind(to: Binder(self) { me, _ in
+                me.viewModel.input.loginButtonTapped()
+            })
+            .disposed(by: disposeBag)
+        
+        //output
+        viewModel.output.loginSucceeded.asObservable()
+            .bind(to: Binder(self) { me, _ in
+                let rootVC = ListViewController()
+                let navVC = UINavigationController(rootViewController: rootVC)
+                navVC.modalPresentationStyle = .fullScreen
+                me.present(navVC, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        //サインアップ画面へ遷移
+        moveToSignUpViewButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                let rootVC = SignUpViewController()
+                let navVC = UINavigationController(rootViewController: rootVC)
+                navVC.modalPresentationStyle = .fullScreen
+                self?.present(navVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
-    @objc private func tapLoginButton() {
-        login()
-    }
-    
-    @objc private func tapMoveToSignUpViewButton() {
-        let rootVC = SignUpViewController()
-        let navVC = UINavigationController(rootViewController: rootVC)
-        navVC.modalPresentationStyle = .fullScreen
-        present(navVC, animated: true)
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         userNameTextField.resignFirstResponder()
         return true
-    }
-    
-    private func login() {
-        guard
-            let username = userNameTextField.text,
-            let password = passwordTextField.text
-        else {
-            return
-        }
-        
-        authRepository.login(username: username, password: password)
-            .subscribe(on: SerialDispatchQueueScheduler(qos: .background))
-            .observe(on: MainScheduler.instance)
-            .subscribe( onSuccess: { [weak self] token in
-                guard let me = self else { return }
-                guard let authToken = token["token"] else { return }
-                me.keychainAccessRepository.save(token: authToken)
-                let rootVC = ListViewController()
-                let navVC = UINavigationController(rootViewController: rootVC)
-                navVC.modalPresentationStyle = .fullScreen
-                self?.present(navVC, animated: true)
-            },
-            onFailure: { error in
-                guard let error = error as? APIError else { return }
-                switch error {
-                case .decode(let error):
-                    print(error)
-                case .network(let error):
-                    print(error)
-                case .unknown(let error):
-                    print(error)
-                case .noResponse:
-                    print("No Response")
-                }
-            })
-            .disposed(by: disposeBag)
     }
 }
