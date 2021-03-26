@@ -65,7 +65,7 @@ final class TaskTableViewCell: UITableViewCell {
     }
     
     private func done() {
-        taskRepository.done(id: taskId, completion: { [weak self] result in
+        taskRepository.done(taskIDs: [taskId], completion: { [weak self] result in
             guard let me = self else { return }
             switch result {
             case .success(()):
