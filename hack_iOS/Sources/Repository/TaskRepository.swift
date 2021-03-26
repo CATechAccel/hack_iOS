@@ -6,23 +6,25 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 struct TaskRepository: Repository {
     typealias Response = TaskSource
     let apiClient = APIClient()
     
-    func fetch(completion: @escaping (Result<Response, APIError>) -> Void) {
+    func fetch() -> Single<Response> {
         let request = TaskRequest()
-        apiClient.request(request, completion: completion)
+        return apiClient.request(request)
     }
     
-    func post(name: String, description: String?, completion: @escaping (Result<Void, APIError>) -> Void) {
+    func post(name: String, description: String?) -> Single<Void> {
         let request = AddTaskRequest(name: name, description: description)
-        apiClient.request(request, completion: completion)
+        return apiClient.request(request)
     }
     
-    func done(id: String, completion: @escaping (Result<Void, APIError>) -> Void) {
+    func done(id: String) -> Single<Void> {
         let request = DoneRequest(id: id)
-        apiClient.request(request, completion: completion)
+        return apiClient.request(request)
     }
 }

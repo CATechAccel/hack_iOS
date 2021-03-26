@@ -6,20 +6,20 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 struct AuthRepository: Repository {
     typealias Response = [String: String]
     let apiClient = APIClient()
 
-    func login(username: String,password: String, completion: @escaping (Result<Response, APIError>) -> Void) {
+    func login(username: String,password: String) -> Single<Response> {
         let request = AuthRequest(username: username, password: password, type: .login)
-        apiClient.request(request, completion: completion)
-        return
+        return apiClient.request(request)
     }
     
-    func signup(username: String,password: String, completion: @escaping (Result<Response, APIError>) -> Void) {
+    func signup(username: String,password: String) -> Single<Response> {
         let request = AuthRequest(username: username, password: password, type: .signup)
-        apiClient.request(request, completion: completion)
-        return
+        return apiClient.request(request)
     }
 }
